@@ -30,13 +30,13 @@ get '/tweet' do
   erb :create_tweet
 end
 
+get '/status/:job_id' do
+ job = job_is_complete(params[:job_id])
+ job.to_s
+end
+
 
 post '/newtweet' do
-  username = User.find(session[:user_id])
   user = User.find(session[:user_id])
-  user = Twitter::Client.new(
-    :oauth_token => user.oauth_token,
-    :oauth_token_secret => user.oauth_secret
-  )
-  user.update(params[:tweet])
+  user.tweet_later(params[:tweet], 2)
 end
